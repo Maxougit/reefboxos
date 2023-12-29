@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import {
   LineChart,
@@ -10,18 +10,49 @@ import {
   Legend,
 } from "recharts";
 import { ResponsiveContainer } from "recharts";
+import { getInstantaneousRate } from "../services/freeboxApi";
 
-const BandwidthGraph = ({ rateHistory }) => {
-  console.log(rateHistory);
+const BandwidthGraph = ({ status }) => {
+  const [rateHistory, setRateHistory] = useState([]); // Modifier pour stocker l'historique des débits
+
+  useEffect(() => {
+    const fetchRate = async () => {
+      try {
+        const sessionToken = localStorage.getItem("sessionToken");
+        const rateData = await getInstantaneousRate(sessionToken);
+        // console.log("Données de débit : ", rateData);
+        setRateHistory((prevHistory) => [
+          ...prevHistory,
+          { timestamp: new Date(), ...rateData },
+        ]);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des données de débit",
+          error
+        );
+      }
+    };
+
+    if (status === "granted") {
+      fetchRate(); // Récupérer immédiatement les données de débit
+      const intervalId = setInterval(fetchRate, 1000); // Modifier ici pour régler la fréquence de mise à jour (en ms)
+      return () => clearInterval(intervalId); // Nettoyage de l'intervalle quand le composant est démonté ou le statut change
+    }
+  }, [status]);
+
   const data = rateHistory.slice(-500).map((rate) => ({
     time: new Date(rate.timestamp).toLocaleTimeString(),
     rateUp: rate.rate_up / 125000,
     rateDown: rate.rate_down / 125000,
   }));
 
-  const averageRate =
-    rateHistory.reduce((sum, rate) => sum + rate.rate_up + rate.rate_down, 0) /
-    (rateHistory.length * 200000);
+  const averageRateUp =
+    rateHistory.slice(-5).reduce((sum, rate) => sum + rate.rate_up, 0) /
+    (5 * 125000);
+
+  const averageRateDown =
+    rateHistory.slice(-5).reduce((sum, rate) => sum + rate.rate_down, 0) /
+    (5 * 125000);
 
   const maxRateUp =
     Math.max(...rateHistory.map((rate) => rate.rate_up)) / 125000;
@@ -52,7 +83,10 @@ const BandwidthGraph = ({ rateHistory }) => {
         <Typography variant="body1" component="div">
           <Box sx={{ bgcolor: "#f5f5f5", p: 2, borderRadius: 4 }}>
             <Typography variant="body2">
-              Average bandwidth: {averageRate.toFixed(2)} Mbps
+              Actual bandwidth, donw: {averageRateDown.toFixed(2)} Mbps
+            </Typography>
+            <Typography variant="body2">
+              Actual bandwidth, up: {averageRateUp.toFixed(2)} Mbps
             </Typography>
           </Box>
         </Typography>

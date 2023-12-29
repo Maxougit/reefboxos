@@ -3,13 +3,12 @@ import {
   getAppToken,
   checkAuthorizationStatus,
   getSessionToken,
-  getInstantaneousRate,
 } from "./services/freeboxApi";
-import RateChart from "./components/bandwidthGraph";
+import BandwidthGraph from "./components/bandwidthGraph";
+import DeviceList from "./components/deviceList";
 
 const App = () => {
   const [status, setStatus] = useState("pending"); // 'pending', 'denied', 'granted'
-  const [rateHistory, setRateHistory] = useState([]); // Modifier pour stocker l'historique des débits
 
   //authentification
   useEffect(() => {
@@ -58,39 +57,13 @@ const App = () => {
     initializeAuth();
   }, []);
 
-  // Récupération des données de débit
-  useEffect(() => {
-    const fetchRate = async () => {
-      try {
-        const sessionToken = localStorage.getItem("sessionToken");
-        const rateData = await getInstantaneousRate(sessionToken);
-        // console.log("Données de débit : ", rateData);
-        setRateHistory((prevHistory) => [
-          ...prevHistory,
-          { timestamp: new Date(), ...rateData },
-        ]);
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des données de débit",
-          error
-        );
-      }
-    };
-
-    if (status === "granted") {
-      fetchRate(); // Récupérer immédiatement les données de débit
-      const intervalId = setInterval(fetchRate, 1000); // Modifier ici pour régler la fréquence de mise à jour (en ms)
-      return () => clearInterval(intervalId); // Nettoyage de l'intervalle quand le composant est démonté ou le statut change
-    }
-  }, [status]);
-
   return (
     <div className="App">
       <h1>ReefBoxOS</h1>
-      <p>Statut : {status}</p>
-      {status === "granted" && rateHistory.length > 0 && (
-        <RateChart rateHistory={rateHistory} />
-      )}
+
+      {status === "granted" && <BandwidthGraph status={status} />}
+
+      <DeviceList status={status} />
     </div>
   );
 };

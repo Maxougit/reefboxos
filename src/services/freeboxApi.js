@@ -65,9 +65,23 @@ const getInstantaneousRate = async (sessionToken) => {
   }
 };
 
+const getListDevice = async (sessionToken) => {
+  try {
+    // Remplacez par l'endpoint exact de l'API pour les données de débit
+    const response = await axios.get("/api/v8/lan/browser/pub", {
+      headers: { "X-Fbx-App-Auth": sessionToken },
+    });
+    return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
+  } catch (error) {
+    console.error("Erreur lors de la récupération du débit instantané", error);
+    throw error;
+  }
+};
+
 export {
   getAppToken,
   getSessionToken,
   getInstantaneousRate,
   checkAuthorizationStatus,
+  getListDevice,
 };
