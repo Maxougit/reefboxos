@@ -1,32 +1,25 @@
 import axios from "axios";
-import hmacSHA1 from "crypto-js/hmac-sha1";
 
-// Fonction pour obtenir un token d'application
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
+
 const getAppToken = async () => {
-  // Vos détails d'application
-  const appInfo = {
-    app_id: "reefboxos",
-    app_name: "ReefBoxOS",
-    app_version: "1.0",
-    device_name: "ReefOS",
-  };
-
   try {
-    // Remplacer par l'URL correcte de l'API Freebox
-    const response = await axios.post("/api/v8/login/authorize/", appInfo);
-    // console.log("GetAppToken", response.data);
-    // Gérer la réponse et extraire le token
-    return response.data.result;
+    const response = await axios.post(`${API_BASE_URL}/appToken`); // Adjusted
+    return response.data;
   } catch (error) {
     console.error("Erreur lors de l'obtention du token d'application", error);
-    throw error; // Gérer ou propager l'erreur
+    throw error;
   }
 };
 
 const checkAuthorizationStatus = async (track_id) => {
   try {
-    const response = await axios.get("/api/v8/login/authorize/" + track_id);
-    return response.data.result; // Assurez-vous que cela renvoie le statut de l'autorisation
+    const response = await axios.get(
+      `${API_BASE_URL}/authorizationStatus/${track_id}`
+    ); // Adjusted
+    console.log("checkAuthorizationStatus", response.data);
+    return response.data;
   } catch (error) {
     console.error(
       "Erreur lors de la vérification du statut de l'autorisation",
@@ -37,28 +30,25 @@ const checkAuthorizationStatus = async (track_id) => {
 };
 
 const getSessionToken = async (appToken, challenge) => {
-  const password = hmacSHA1(challenge, appToken).toString();
-
   try {
-    const response = await axios.post("/api/v8/login/session/", {
-      app_id: "reefboxos",
-      password: password,
+    const response = await axios.post(`${API_BASE_URL}/sessionToken`, {
+      appToken,
+      challenge,
     });
-    return response.data.result.session_token; // or adjust based on the API response structure
+    return response.data;
   } catch (error) {
-    console.error("Error obtaining session token", error);
+    console.error("Erreur lors de l'obtention du token de session", error);
     throw error;
   }
 };
 
-// Fonction pour obtenir le débit instantané
 const getInstantaneousRate = async (sessionToken) => {
   try {
-    // Remplacez par l'endpoint exact de l'API pour les données de débit
-    const response = await axios.get("/api/v8/connection/full/", {
+    const response = await axios.get(`${API_BASE_URL}/instantaneousRate`, {
+      // Adjusted
       headers: { "X-Fbx-App-Auth": sessionToken },
     });
-    return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
+    return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;
@@ -67,13 +57,16 @@ const getInstantaneousRate = async (sessionToken) => {
 
 const getListDevice = async (sessionToken) => {
   try {
-    // Remplacez par l'endpoint exact de l'API pour les données de débit
-    const response = await axios.get("/api/v8/lan/browser/pub", {
+    const response = await axios.get(`${API_BASE_URL}/listDevice`, {
+      // Adjusted
       headers: { "X-Fbx-App-Auth": sessionToken },
     });
-    return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
+    return response.data;
   } catch (error) {
-    console.error("Erreur lors de la récupération du débit instantané", error);
+    console.error(
+      "Erreur lors de la récupération de la liste des appareils",
+      error
+    );
     throw error;
   }
 };
