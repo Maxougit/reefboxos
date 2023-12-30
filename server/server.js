@@ -55,7 +55,6 @@ app.get("/listDevice", async (req, res) => {
 app.post("/wakeonlan", async (req, res) => {
   const { mac } = req.body;
   const sessionToken = req.header("X-Fbx-App-Auth");
-  console.log(sessionToken);
   const wol = await wakeonlan(mac, sessionToken);
   res.send(wol);
 });
