@@ -6,6 +6,7 @@ import {
   getInstantaneousRate,
   getListDevice,
 } from "./freeboxApi.js";
+import { getPingLatency } from "./ping.js";
 import cors from "cors";
 
 const app = express();
@@ -47,6 +48,18 @@ app.get("/listDevice", async (req, res) => {
   const sessionToken = req.header("X-Fbx-App-Auth");
   const listDevice = await getListDevice(sessionToken);
   res.send(listDevice);
+});
+
+app.get("/ping/:ip", async (req, res) => {
+  const { ip } = req.params;
+  getPingLatency(ip)
+    .then((latency) => {
+      res.send(latency);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.send("NAn");
+    });
 });
 
 // Start the server

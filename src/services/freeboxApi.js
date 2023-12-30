@@ -115,6 +115,16 @@ const getListDevice = async (sessionToken) => {
   }
 };
 
+const getPing = async (ip) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/ping/${ip}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du ping", error);
+    throw error;
+  }
+};
+
 export {
   initializeAuth,
   getAppToken,
@@ -122,4 +132,5 @@ export {
   getInstantaneousRate,
   checkAuthorizationStatus,
   getListDevice,
+  getPing,
 };

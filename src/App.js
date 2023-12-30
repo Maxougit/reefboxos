@@ -15,7 +15,6 @@ const App = () => {
   return (
     <div className="App">
       <h1>ReefBox OS</h1>
-
       {status === "granted" && <BandwidthGraph status={status} />}
       {status === "granted" && <DeviceList status={status} />}
     </div>
