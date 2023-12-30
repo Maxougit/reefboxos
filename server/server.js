@@ -28,7 +28,6 @@ app.post("/appToken", getAppToken);
 app.get("/authorizationStatus/:track_id", async (req, res) => {
   const { track_id } = req.params;
   const authorizationStatus = await checkAuthorizationStatus(track_id);
-  console.log("checkAuthorizationStatus", authorizationStatus);
   res.send(authorizationStatus);
 });
 
