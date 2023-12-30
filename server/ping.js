@@ -7,7 +7,6 @@ const getPingLatency = (ip) => {
   return new Promise((resolve, reject) => {
     exec(`${pingCommand} ${ip}`, (error, stdout, stderr) => {
       if (error) {
-        console.error(`Erreur d'exécution de ping: ${error}`);
         reject(`Erreur de ping: ${error}`);
         return;
       }

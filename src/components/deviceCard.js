@@ -14,12 +14,20 @@ import { getPing } from "../services/freeboxApi";
 
 const DeviceCard = ({ device }) => {
   const [ping, setPing] = useState("NA");
+  const [connectivityType, setConnectivityType] = useState("NA");
 
-  //   console.log(
+  //   const connectivityType =
   //     device.access_point === undefined
   //       ? device
-  //       : device.access_point.connectivity_type
-  //   );
+  //       : device.access_point.connectivity_type;
+
+  useEffect(() => {
+    if (device.access_point === undefined) {
+      setConnectivityType("NA");
+    } else {
+      setConnectivityType(device.access_point.connectivity_type);
+    }
+  }, [device]);
 
   const handleFavoriteClick = () => {
     console.log("Favorite clicked", device);
@@ -49,8 +57,7 @@ const DeviceCard = ({ device }) => {
           <Grid item>
             <Typography variant="h5">{device.primary_name}</Typography>
             <Typography variant="body2">
-              IP: {device.l3connectivities} | Ping: {ping}
-              {/* {device.access_type} */}
+              IP: {device.l3connectivities} | Ping: {ping} | {connectivityType}
             </Typography>
           </Grid>
           <Grid item>

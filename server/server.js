@@ -57,7 +57,6 @@ app.get("/ping/:ip", async (req, res) => {
       res.send(latency);
     })
     .catch((error) => {
-      console.error(error);
       res.send("NAn");
     });
 });

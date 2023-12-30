@@ -15,7 +15,6 @@ const DeviceList = ({ status, refreshInterval = 10000 }) => {
         if (sessionToken && status === "granted") {
           const devices = await getListDevice(sessionToken);
           //   console.log(devices);
-          // Mettre à jour la liste des appareils avec la dernière adresse de l3connectivities
           const updatedDevices = devices
             .filter((device) => device.default_name)
             .map((device) => ({
@@ -34,7 +33,6 @@ const DeviceList = ({ status, refreshInterval = 10000 }) => {
     };
 
     fetchDeviceList();
-    // Définir un intervalle pour actualiser la liste des appareils
     const interval = setInterval(fetchDeviceList, refreshInterval);
 
     return () => clearInterval(interval);
