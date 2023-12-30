@@ -20,7 +20,7 @@ const BandwidthGraph = ({ status }) => {
       try {
         const sessionToken = localStorage.getItem("sessionToken");
         const rateData = await getInstantaneousRate(sessionToken);
-        // console.log("Données de débit : ", rateData);
+
         setRateHistory((prevHistory) => [
           ...prevHistory,
           { timestamp: new Date(), ...rateData },
