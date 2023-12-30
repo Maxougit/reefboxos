@@ -66,7 +66,7 @@ const getInstantaneousRate = async (sessionToken) => {
   } catch (error) {
     if (error.response.status === 403) {
       console.error(error.data.error_code);
-      throw error;
+      return error.data.error_code;
     }
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;
@@ -83,7 +83,7 @@ const getListDevice = async (sessionToken) => {
   } catch (error) {
     if (error.response.status === 403) {
       console.error(error.data.error_code);
-      throw error;
+      return error.data.error_code;
     }
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;
