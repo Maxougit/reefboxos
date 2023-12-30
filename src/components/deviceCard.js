@@ -12,7 +12,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import WifiIcon from "@mui/icons-material/Wifi"; // Logo Wifi
 import SettingsEthernetIcon from "@mui/icons-material/SettingsEthernet"; // Logo Ethernet
-import { getPing, addFavorite, removeFavorite } from "../services/freeboxApi";
+import {
+  getPing,
+  addFavorite,
+  removeFavorite,
+  wakeOnLan,
+} from "../services/freeboxApi";
 
 const DeviceCard = ({ device, favourite, setfavourite }) => {
   const [ping, setPing] = useState("NA");
@@ -60,7 +65,8 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
   );
 
   const handlePowerClick = () => {
-    console.log("Power clicked", device);
+    console.log("Power clicked", device.access_point.mac);
+    wakeOnLan(device.access_point.mac, localStorage.getItem("sessionToken"));
   };
 
   return (

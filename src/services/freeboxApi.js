@@ -115,6 +115,26 @@ const getListDevice = async (sessionToken) => {
   }
 };
 
+const wakeOnLan = async (macAddress, sessionToken) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/wakeonlan`,
+      { mac: macAddress },
+      {
+        headers: { "X-Fbx-App-Auth": sessionToken },
+      }
+    );
+
+    if (response === "auth_required") {
+      localStorage.removeItem("sessionToken");
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi du signal Wake On Lan", error);
+    throw error;
+  }
+};
+
 const getPing = async (ip) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/ping/${ip}`);
@@ -159,6 +179,7 @@ export {
   getSessionToken,
   getInstantaneousRate,
   checkAuthorizationStatus,
+  wakeOnLan,
   getListDevice,
   getPing,
   getFavorite,

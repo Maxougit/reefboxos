@@ -90,10 +90,36 @@ const getListDevice = async (sessionToken) => {
   }
 };
 
+const wakeonlan = async (mac, sessionToken) => {
+  console.log(sessionToken);
+  try {
+    const response = await axios.post(
+      freeboxURL + "/api/v8/lan/wol/pub/",
+      {
+        mac: mac,
+        password: "",
+      },
+      {
+        headers: { "X-Fbx-App-Auth": sessionToken },
+      }
+    );
+    console.log(response);
+    return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
+  } catch (error) {
+    if (error.response.status === 403) {
+      console.error("wakeonlan", error); //to be fiexed : find the right error message
+      return "auth_required";
+    }
+    console.error("Erreur lors de la récupération du débit instantané", error);
+    throw error;
+  }
+};
+
 export {
   getAppToken,
   getSessionToken,
   getInstantaneousRate,
   checkAuthorizationStatus,
   getListDevice,
+  wakeonlan,
 };

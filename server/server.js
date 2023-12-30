@@ -5,6 +5,7 @@ import {
   getSessionToken,
   getInstantaneousRate,
   getListDevice,
+  wakeonlan,
 } from "./freeboxApi.js";
 import { getPingLatency } from "./ping.js";
 import { listFavorites, addFavorite, removeFavorite } from "./userdata.js";
@@ -49,6 +50,14 @@ app.get("/listDevice", async (req, res) => {
   const sessionToken = req.header("X-Fbx-App-Auth");
   const listDevice = await getListDevice(sessionToken);
   res.send(listDevice);
+});
+
+app.post("/wakeonlan", async (req, res) => {
+  const { mac } = req.body;
+  const sessionToken = req.header("X-Fbx-App-Auth");
+  console.log(sessionToken);
+  const wol = await wakeonlan(mac, sessionToken);
+  res.send(wol);
 });
 
 app.get("/ping/:ip", async (req, res) => {
