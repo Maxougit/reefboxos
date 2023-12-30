@@ -10,31 +10,40 @@ import {
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import { getPing } from "../services/freeboxApi";
+import WifiIcon from "@mui/icons-material/Wifi"; // Logo Wifi
+import SettingsEthernetIcon from "@mui/icons-material/SettingsEthernet"; // Logo Ethernet
+import { getPing, addFavorite, removeFavorite } from "../services/freeboxApi";
 
-const DeviceCard = ({ device }) => {
+const DeviceCard = ({ device, favourite, setfavourite }) => {
   const [ping, setPing] = useState("NA");
   const [connectivityType, setConnectivityType] = useState("NA");
 
-  //   const connectivityType =
-  //     device.access_point === undefined
-  //       ? device
-  //       : device.access_point.connectivity_type;
+  const handleFavoriteClick = () => {
+    //peut être utiliser tanstackquerie et invalidate query
+    if (favourite.includes(device.id)) {
+      removeFavorite(device.id);
+      setfavourite(favourite.filter((id) => id !== device.id));
+    } else {
+      addFavorite(device.id);
+      setfavourite([...favourite, device.id]);
+    }
+  };
 
   useEffect(() => {
     if (device.access_point === undefined) {
       setConnectivityType("NA");
     } else {
-      setConnectivityType(device.access_point.connectivity_type);
+      // Ici, nous remplaçons le texte par des icônes
+      const type = device.access_point.connectivity_type;
+      if (type === "wifi") {
+        setConnectivityType(<WifiIcon />);
+      } else if (type === "ethernet") {
+        setConnectivityType(<SettingsEthernetIcon />);
+      } else {
+        setConnectivityType("NA");
+      }
     }
   }, [device]);
-
-  const handleFavoriteClick = () => {
-    console.log("Favorite clicked", device);
-  };
-  const handlePowerClick = () => {
-    console.log("Power clicked", device);
-  };
 
   useEffect(
     () => async () => {
@@ -50,6 +59,10 @@ const DeviceCard = ({ device }) => {
     [device]
   );
 
+  const handlePowerClick = () => {
+    console.log("Power clicked", device);
+  };
+
   return (
     <Card>
       <CardContent>
@@ -57,7 +70,7 @@ const DeviceCard = ({ device }) => {
           <Grid item>
             <Typography variant="h5">{device.primary_name}</Typography>
             <Typography variant="body2">
-              IP: {device.l3connectivities} | Ping: {ping} | {connectivityType}
+              IP: {device.l3connectivities} | Ping: {ping}
             </Typography>
           </Grid>
           <Grid item>
@@ -70,11 +83,14 @@ const DeviceCard = ({ device }) => {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton onClick={handleFavoriteClick}>
-          <FavoriteIcon />
+          <FavoriteIcon
+            style={{ color: favourite.includes(device.id) ? "red" : "inherit" }}
+          />
         </IconButton>
         <IconButton onClick={handlePowerClick}>
           <PowerSettingsNewIcon />
         </IconButton>
+        <IconButton>{connectivityType}</IconButton>
       </CardActions>
     </Card>
   );

@@ -7,6 +7,7 @@ import {
   getListDevice,
 } from "./freeboxApi.js";
 import { getPingLatency } from "./ping.js";
+import { listFavorites, addFavorite, removeFavorite } from "./userdata.js";
 import cors from "cors";
 
 const app = express();
@@ -59,6 +60,38 @@ app.get("/ping/:ip", async (req, res) => {
     .catch((error) => {
       res.send("NAn");
     });
+});
+
+app.get("/favorite", async (req, res) => {
+  try {
+    const favorite = await listFavorites();
+    res.send(favorite);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred");
+  }
+});
+
+app.post("/favorite", async (req, res) => {
+  try {
+    const { favoriteId } = req.body;
+    await addFavorite(favoriteId);
+    res.send("Favorite added successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred");
+  }
+});
+
+app.delete("/favorite/:favoriteId", async (req, res) => {
+  try {
+    const { favoriteId } = req.params;
+    await removeFavorite(favoriteId);
+    res.send("Favorite removed successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred");
+  }
 });
 
 // Start the server

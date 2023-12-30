@@ -65,7 +65,7 @@ const getInstantaneousRate = async (sessionToken) => {
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
     if (error.response.status === 403) {
-      console.error("getInstantaneousRate", error.data); //to be fiexed : find the right error message
+      console.error("getInstantaneousRate", error); //to be fiexed : find the right error message
       return "auth_required";
     }
     console.error("Erreur lors de la récupération du débit instantané", error);
@@ -82,7 +82,7 @@ const getListDevice = async (sessionToken) => {
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
     if (error.response.status === 403) {
-      console.error("getListDevice", error.data); //to be fiexed : find the right error message
+      console.error("getListDevice", error); //to be fiexed : find the right error message
       return "auth_required";
     }
     console.error("Erreur lors de la récupération du débit instantané", error);

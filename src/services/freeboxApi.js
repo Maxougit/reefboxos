@@ -125,6 +125,34 @@ const getPing = async (ip) => {
   }
 };
 
+const getFavorite = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/favorite`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du ping", error);
+    throw error;
+  }
+};
+
+const addFavorite = async (favoriteId) => {
+  try {
+    await axios.post(`${API_BASE_URL}/favorite`, { favoriteId });
+  } catch (error) {
+    console.error("Erreur lors de la récupération du ping", error);
+    throw error;
+  }
+};
+
+const removeFavorite = async (favoriteId) => {
+  try {
+    await axios.delete(`${API_BASE_URL}/favorite/${favoriteId}`);
+  } catch (error) {
+    console.error("Erreur lors de la récupération du ping", error);
+    throw error;
+  }
+};
+
 export {
   initializeAuth,
   getAppToken,
@@ -133,4 +161,7 @@ export {
   checkAuthorizationStatus,
   getListDevice,
   getPing,
+  getFavorite,
+  addFavorite,
+  removeFavorite,
 };
