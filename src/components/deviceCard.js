@@ -20,8 +20,8 @@ import {
 } from "../services/freeboxApi";
 
 const DeviceCard = ({ device, favourite, setfavourite }) => {
-  const [ping, setPing] = useState("NA");
-  const [connectivityType, setConnectivityType] = useState("NA");
+  const [ping, setPing] = useState("NAn");
+  const [connectivityType, setConnectivityType] = useState("NAn");
 
   const handleFavoriteClick = () => {
     //peut être utiliser tanstackquerie et invalidate query
@@ -53,7 +53,9 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
   useEffect(
     () => async () => {
       try {
-        if (device.active) setPing(await getPing(device.l3connectivities));
+        if (device.active && connectivityType !== "NA")
+          setPing(await getPing(device.l3connectivities));
+        else setPing("NAn");
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des données de ping",
@@ -61,16 +63,20 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
         );
       }
     },
-    [device]
+    [device, connectivityType]
   );
 
   const handlePowerClick = async () => {
-    console.log("Power clicked", device.access_point.mac);
+    console.log("Power clicked", device.l2ident.id);
     const result = await wakeOnLan(
-      device.access_point.mac,
+      device.l2ident.id,
       localStorage.getItem("sessionToken")
     );
     console.log(result);
+  };
+
+  const handleTypeClick = () => {
+    console.log(device);
   };
 
   return (
@@ -85,8 +91,14 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
           </Grid>
           <Grid item>
             <Chip
-              label={device.active ? "Online" : "Offline"}
-              color={device.active ? "success" : "error"}
+              label={
+                device.active && !device.reachable
+                  ? "Offline"
+                  : device.active
+                  ? "Online"
+                  : "Offline"
+              }
+              color={device.active && device.reachable ? "success" : "error"}
             />
           </Grid>
         </Grid>
@@ -100,7 +112,7 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
         <IconButton onClick={handlePowerClick}>
           <PowerSettingsNewIcon />
         </IconButton>
-        <IconButton>{connectivityType}</IconButton>
+        <IconButton onClick={handleTypeClick}>{connectivityType}</IconButton>
       </CardActions>
     </Card>
   );
