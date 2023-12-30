@@ -4,7 +4,7 @@ import BandwidthGraph from "./components/bandwidthGraph";
 import DeviceList from "./components/deviceList";
 
 const App = () => {
-  const [status, setStatus] = useState("pending"); // 'pending', 'denied', 'granted'
+  const [status, setStatus] = useState("pending");
 
   // Authentification
   useEffect(() => {

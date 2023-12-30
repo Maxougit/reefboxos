@@ -88,7 +88,7 @@ const getInstantaneousRate = async (sessionToken) => {
       headers: { "X-Fbx-App-Auth": sessionToken },
     });
     if (response === "auth_required") {
-      localStorage.removeItem("sessionToken");
+      initializeAuth();
     }
     return response.data;
   } catch (error) {
