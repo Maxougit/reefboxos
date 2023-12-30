@@ -11,8 +11,8 @@ import cors from "cors";
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3000", // or '*' for all origins
-  allowedHeaders: ["Content-Type", "X-Fbx-App-Auth"], // Add any other headers here
+  origin: "*",
+  allowedHeaders: ["Content-Type", "X-Fbx-App-Auth"],
 };
 
 app.use(cors(corsOptions));
@@ -28,6 +28,7 @@ app.post("/appToken", getAppToken);
 app.get("/authorizationStatus/:track_id", async (req, res) => {
   const { track_id } = req.params;
   const authorizationStatus = await checkAuthorizationStatus(track_id);
+  console.log("checkAuthorizationStatus", authorizationStatus);
   res.send(authorizationStatus);
 });
 

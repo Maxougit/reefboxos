@@ -20,8 +20,6 @@ const App = () => {
         if (!appToken || !trackId) {
           const appTokenResponse = await getAppToken();
 
-          console.log("Token d'application : ", appTokenResponse);
-
           localStorage.setItem("appToken", appTokenResponse.app_token); // Stocker pour les utilisations futures
           localStorage.setItem("trackId", appTokenResponse.track_id); // Stocker pour les utilisations futures
         }
@@ -30,8 +28,6 @@ const App = () => {
           const statusResponse = await checkAuthorizationStatus(
             localStorage.getItem("trackId")
           );
-
-          console.log("Statut de l'autorisation : ", statusResponse.status);
 
           setStatus(statusResponse.status);
           if (statusResponse.status === "granted") {
@@ -42,6 +38,8 @@ const App = () => {
             localStorage.setItem("sessionToken", sessionToken);
           } else if (statusResponse.status === "pending") {
             setTimeout(checkAuthStatus, 1000);
+          } else {
+            localStorage.removeItem("sessionToken");
           }
         };
 

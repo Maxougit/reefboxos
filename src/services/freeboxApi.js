@@ -5,7 +5,7 @@ const API_BASE_URL =
 
 const getAppToken = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/appToken`); // Adjusted
+    const response = await axios.post(`${API_BASE_URL}/appToken`);  
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'obtention du token d'application", error);
@@ -17,8 +17,7 @@ const checkAuthorizationStatus = async (track_id) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}/authorizationStatus/${track_id}`
-    ); // Adjusted
-    console.log("checkAuthorizationStatus", response.data);
+    );  
     return response.data;
   } catch (error) {
     console.error(
@@ -45,7 +44,6 @@ const getSessionToken = async (appToken, challenge) => {
 const getInstantaneousRate = async (sessionToken) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/instantaneousRate`, {
-      // Adjusted
       headers: { "X-Fbx-App-Auth": sessionToken },
     });
     return response.data;
@@ -58,7 +56,6 @@ const getInstantaneousRate = async (sessionToken) => {
 const getListDevice = async (sessionToken) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/listDevice`, {
-      // Adjusted
       headers: { "X-Fbx-App-Auth": sessionToken },
     });
     return response.data;

@@ -5,7 +5,6 @@ const freeboxURL = "http://mafreebox.freebox.fr";
 
 // Fonction pour obtenir un token d'application
 const getAppToken = async () => {
-  // Vos détails d'application
   const appInfo = {
     app_id: "reefboxos",
     app_name: "ReefBoxOS",
@@ -19,8 +18,6 @@ const getAppToken = async () => {
       `${freeboxURL}/api/v8/login/authorize/`,
       appInfo
     );
-    console.log("GetAppToken", response.data);
-    // Gérer la réponse et extraire le token
     return response.data.result;
   } catch (error) {
     console.error("Erreur lors de l'obtention du token d'application", error);
@@ -44,7 +41,6 @@ const checkAuthorizationStatus = async (track_id) => {
 };
 
 const getSessionToken = async (appToken, challenge) => {
-  console.log("getSessionToken", appToken, challenge);
   const password = hmacSHA1(challenge, appToken).toString();
 
   try {
@@ -68,6 +64,10 @@ const getInstantaneousRate = async (sessionToken) => {
     });
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
+    if (error.response.status === 403) {
+      console.error(error.data.error_code);
+      throw error;
+    }
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;
   }
@@ -81,6 +81,10 @@ const getListDevice = async (sessionToken) => {
     });
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
+    if (error.response.status === 403) {
+      console.error(error.data.error_code);
+      throw error;
+    }
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;
   }
