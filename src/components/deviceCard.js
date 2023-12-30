@@ -64,9 +64,13 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
     [device]
   );
 
-  const handlePowerClick = () => {
+  const handlePowerClick = async () => {
     console.log("Power clicked", device.access_point.mac);
-    wakeOnLan(device.access_point.mac, localStorage.getItem("sessionToken"));
+    const result = await wakeOnLan(
+      device.access_point.mac,
+      localStorage.getItem("sessionToken")
+    );
+    console.log(result);
   };
 
   return (

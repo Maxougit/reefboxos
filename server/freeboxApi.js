@@ -103,8 +103,8 @@ const wakeonlan = async (mac, sessionToken) => {
         headers: { "X-Fbx-App-Auth": sessionToken },
       }
     );
-    console.log(response);
-    return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
+
+    return response.data;
   } catch (error) {
     if (error.response.status === 403) {
       console.error("wakeonlan", error); //to be fiexed : find the right error message
