@@ -13,5 +13,5 @@ cd reefboxos
 # Installer les dépendances et lancer le projet
 
 ```bash
-npm install && cd .\server\ && npm install && cd .. && cd npm start
+npm install && cd .\server\ && npm install && cd .. && npm start
 ```
