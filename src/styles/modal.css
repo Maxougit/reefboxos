@@ -49,11 +49,9 @@
 
     @media (max-width: 768px) {
         .modal-content {
-          width: 90% !important; /* Garde la largeur actuelle */
-          height: 60vh !important; /* Augmente la hauteur à 95% de la hauteur de la fenêtre d'affichage */
-          max-width: 90vw; /* Largeur maximale basée sur la largeur de la fenêtre d'affichage */
-          max-height: 95vh; /* Hauteur maximale basée sur la hauteur de la fenêtre d'affichage */
-          overflow: auto; /* Permet le défilement si le contenu est trop grand */
+          max-width: 90vh !important; 
+          max-height: 50vh !important; 
+          overflow: auto;
         }
       }
 

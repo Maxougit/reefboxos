@@ -74,7 +74,7 @@ const DeviceList = ({ status, refreshInterval = 10000 }) => {
   }
 
   return (
-    <div style={{ overflow: "auto", maxHeight: "100vh" }}>
+    <div style={{ overflow: "auto", height: "80vh" }}>
       <Grid container spacing={2}>
         {deviceList.map((device, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>

@@ -16,11 +16,15 @@ const initializeAuth = async (updateStatusCallback) => {
     }
 
     const checkAuthStatus = async () => {
-      const statusResponse = await checkAuthorizationStatus(
-        localStorage.getItem("trackId")
-      );
+      let statusResponse = {};
+      if (localStorage.getItem("trackId") === undefined) {
+        statusResponse = { status: "timeout" };
+      } else {
+        statusResponse = await checkAuthorizationStatus(
+          localStorage.getItem("trackId")
+        );
+      }
 
-      // setStatus(statusResponse.status);
       if (statusResponse.status === "granted") {
         const sessionToken = await getSessionToken(
           appToken,
@@ -29,8 +33,12 @@ const initializeAuth = async (updateStatusCallback) => {
         localStorage.setItem("sessionToken", sessionToken);
       } else if (statusResponse.status === "pending") {
         setTimeout(checkAuthStatus, 1000);
+      } else if (statusResponse.status === "timeout") {
+        localStorage.removeItem("trackId");
+        localStorage.removeItem("sessionToken");
       } else {
         localStorage.removeItem("sessionToken");
+        checkAuthStatus();
       }
       updateStatusCallback(statusResponse.status); // Call the callback with the new status
     };
@@ -46,7 +54,9 @@ const initializeAuth = async (updateStatusCallback) => {
 
 const getAppToken = async () => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/appToken`);
+    const response = await axios.post(`${API_BASE_URL}/appToken`, {
+      deviceName: "ReefUser",
+    });
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'obtention du token d'application", error);
@@ -128,6 +138,7 @@ const wakeOnLan = async (macAddress, sessionToken) => {
     if (response === "auth_required") {
       localStorage.removeItem("sessionToken");
     }
+
     return response.data;
   } catch (error) {
     console.error("Erreur lors de l'envoi du signal Wake On Lan", error);

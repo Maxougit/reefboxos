@@ -2,9 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { initializeAuth } from "./services/freeboxApi";
 import ModalButton from "./components/modalButton";
-import BandwidthGraph from "./components/BandwidthGraph"; // Importer votre composant BandwidthGraph
+import BandwidthGraph from "./components/bandwidthGraph";
 import DeviceList from "./components/deviceList";
-import { LuActivitySquare, LuComputer } from "react-icons/lu";
+import StatusPage from "./components/statusPage";
+import {
+  LuActivitySquare,
+  LuComputer,
+  LuAlignEndHorizontal,
+} from "react-icons/lu";
 import "./App.css";
 
 const App = () => {
@@ -17,7 +22,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>ReefBox OS</h1>
+      {/* <h1>ReefBox OS</h1> */}
       <div className="dashboard">
         {status === "granted" && (
           <>
@@ -33,6 +38,11 @@ const App = () => {
             />
           </>
         )}
+        <ModalButton
+          component={<StatusPage status={status} />}
+          name={"Log data"}
+          icon={<LuAlignEndHorizontal />}
+        />
       </div>
     </div>
   );

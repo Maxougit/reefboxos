@@ -4,7 +4,7 @@ import hmacSHA1 from "crypto-js/hmac-sha1.js";
 const freeboxURL = "http://mafreebox.freebox.fr";
 
 // Fonction pour obtenir un token d'application
-const getAppToken = async () => {
+const getAppToken = async (deviceName) => {
   const appInfo = {
     app_id: "reefboxos",
     app_name: "ReefBoxOS",
@@ -12,8 +12,12 @@ const getAppToken = async () => {
     device_name: "ReefOS",
   };
 
+  console.log(deviceName);
+  if (deviceName) {
+    appInfo.device_name = deviceName;
+  }
+
   try {
-    // Remplacer par l'URL correcte de l'API Freebox
     const response = await axios.post(
       `${freeboxURL}/api/v8/login/authorize/`,
       appInfo
@@ -64,7 +68,7 @@ const getInstantaneousRate = async (sessionToken) => {
     });
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
-    if (error.response.status === 403) {
+    if (error.code === 403) {
       console.error("getInstantaneousRate", error); //to be fiexed : find the right error message
       return "auth_required";
     }
@@ -81,7 +85,7 @@ const getListDevice = async (sessionToken) => {
     });
     return response.data.result; // Ajustez en fonction de la structure réelle de la réponse
   } catch (error) {
-    if (error.response.status === 403) {
+    if (error.code === 403) {
       console.error("getListDevice", error); //to be fiexed : find the right error message
       return "auth_required";
     }
@@ -108,7 +112,7 @@ const wakeonlan = async (mac, sessionToken) => {
   } catch (error) {
     if (error.response.status === 403) {
       console.error("wakeonlan", error); //to be fiexed : find the right error message
-      return "auth_required";
+      return error.response.data.error_code;
     }
     console.error("Erreur lors de la récupération du débit instantané", error);
     throw error;

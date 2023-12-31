@@ -1,5 +1,7 @@
 /* modalButton.css */
 .modal-button {
+    width: 100px;
+    height: 100px;
     border: none;
     border-radius: 10px; /* Bords légèrement arrondis */
     padding: 10px;

@@ -26,7 +26,13 @@ const port = 3001;
 app.use(express.json());
 
 // Define API endpoints
-app.post("/appToken", getAppToken);
+app.post("/appToken", async (req, res) => {
+  const { deviceName } = req.body;
+  console.log(deviceName);
+  const appToken = await getAppToken(deviceName);
+  console.log(appToken);
+  res.send(appToken);
+});
 
 app.get("/authorizationStatus/:track_id", async (req, res) => {
   const { track_id } = req.params;

@@ -18,6 +18,7 @@ import {
   removeFavorite,
   wakeOnLan,
 } from "../services/freeboxApi";
+import sweetAlert from "./sweetAlert";
 
 const DeviceCard = ({ device, favourite, setfavourite }) => {
   const [ping, setPing] = useState("NAn");
@@ -72,7 +73,9 @@ const DeviceCard = ({ device, favourite, setfavourite }) => {
       device.l2ident.id,
       localStorage.getItem("sessionToken")
     );
-    console.log(result);
+    if (result === "insufficient_rights") {
+      sweetAlert("insufficient_rights");
+    }
   };
 
   const handleTypeClick = () => {

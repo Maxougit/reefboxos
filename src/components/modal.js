@@ -10,8 +10,8 @@ const Modal = ({ children, closeModal }) => {
   const [dimensions, setDimensions] = useState({
     width: 650,
     height: 200,
-    x: 50,
-    y: 10,
+    x: 10,
+    y: 20,
   });
   const [lastDimensions, setLastDimensions] = useState({ ...dimensions });
   const [zIndex, setZIndex] = useState(highestZIndex);
@@ -87,8 +87,6 @@ const Modal = ({ children, closeModal }) => {
           });
         }
       }}
-      minWidth={400}
-      minHeight={200}
       maxWidth={window.innerWidth}
       maxHeight={window.innerHeight}
       bounds="window"
@@ -98,7 +96,6 @@ const Modal = ({ children, closeModal }) => {
       <div className="modal-content">
         <div className="modal-header" onDoubleClick={toggleMaximize}>
           <div className="window-controls">
-            {/* Bouton de maximisation/restauration */}
             <button onClick={toggleMaximize} className="window-control-button">
               {isMaximized ? "🗗" : "🗖"}
             </button>
