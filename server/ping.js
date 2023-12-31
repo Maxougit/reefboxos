@@ -24,7 +24,6 @@ const getPingLatency = (ip) => {
           reject("Latence non trouvée");
         }
       } else {
-        console.log(lines);
         reject("Réponse de ping non standard ou absence de réponse");
       }
       return;

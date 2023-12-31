@@ -30,9 +30,7 @@ const removeFavorite = async (favorite) => {
   try {
     const data = await fs.readFile("./server/data.json", "utf8");
     const favorites = JSON.parse(data).favourite_device;
-    console.log(favorites, favorite);
-    const updatedFavorites = favorites.filter((fav) => fav !== favorite);
-    console.log(updatedFavorites);
+    const updatedFavorites = favorites.filter((fav) => fav !== favorite);;
     await fs.writeFile(
       "./server/data.json",
       JSON.stringify({ favourite_device: updatedFavorites })
