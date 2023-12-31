@@ -1,0 +1,34 @@
+/* modalButton.css */
+.modal-button {
+    border: none;
+    border-radius: 10px; /* Bords légèrement arrondis */
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Ombre douce */
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    flex-direction: column; /* Icône au-dessus du texte */
+    align-items: center; /* Centrage horizontal */
+    justify-content: center; /* Centrage vertical */
+    transition: 0.3s ease;
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* Assurez-vous que rien ne déborde */
+    font-size: 16px; /* Taille du texte */
+  }
+  
+  .icon-container {
+    font-size: 2em; /* Taille de l'icône */
+    margin-bottom: 5px; /* Espacement entre l'icône et le texte */
+  }
+  
+  .button-text {
+    font-weight: bold;
+  }
+  
+  .modal-button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre plus prononcée au survol */
+    transform: translateY(-1px); /* Léger soulèvement au survol */
+  }
+  

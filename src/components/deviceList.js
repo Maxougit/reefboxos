@@ -74,17 +74,19 @@ const DeviceList = ({ status, refreshInterval = 10000 }) => {
   }
 
   return (
-    <Grid container spacing={2}>
-      {deviceList.map((device, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <DeviceCard
-            device={device}
-            favourite={favourite}
-            setfavourite={setFavourite}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <div style={{ overflow: "auto", maxHeight: "100vh" }}>
+      <Grid container spacing={2}>
+        {deviceList.map((device, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <DeviceCard
+              device={device}
+              favourite={favourite}
+              setfavourite={setFavourite}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   );
 };
 
