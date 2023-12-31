@@ -1,0 +1,59 @@
+/* styles/modal.css */
+.modal-content {
+    background-color: white;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden; /* Ajout pour contenir l'entête et le corps */
+    display: flex;
+    flex-direction: column;
+  }
+
+  html, body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  .modal-header {
+    user-select: none; 
+    padding: 4px 8px;
+    background-color: #eee;
+    display: flex;
+    justify-content: flex-end;
+    cursor: move; /* Change le curseur pour indiquer que c'est déplaçable */
+  }
+  
+  .modal-body {
+    padding: 20px;
+    flex-grow: 1; /* Permet au corps de la modal de remplir l'espace restant */
+  }
+  
+  .modal-close-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+    .window-controls {
+    display: flex;
+    align-items: center;
+  }
+
+  .window-control-button {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .modal-content {
+          width: 90% !important; /* Garde la largeur actuelle */
+          height: 60vh !important; /* Augmente la hauteur à 95% de la hauteur de la fenêtre d'affichage */
+          max-width: 90vw; /* Largeur maximale basée sur la largeur de la fenêtre d'affichage */
+          max-height: 95vh; /* Hauteur maximale basée sur la hauteur de la fenêtre d'affichage */
+          overflow: auto; /* Permet le défilement si le contenu est trop grand */
+        }
+      }
+
